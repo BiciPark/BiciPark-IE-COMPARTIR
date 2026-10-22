@@ -29,7 +29,7 @@
 		.then(() => {
 			console.log("BiciPark conectado y autenticado");
 
-			onValue(ref(db, "espacio1/estado"), (snapshot) => {
+			onValue(ref(db, "ESPACIO 1/ESTADO"), (snapshot) => {
 				console.log("Estado del espacio 1:", snapshot.val());
 			}, (error) => {
 				console.error("Error leyendo estado:", error.message);
