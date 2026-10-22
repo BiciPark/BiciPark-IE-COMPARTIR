@@ -4,10 +4,12 @@
 	import {
 		getDatabase,
 		ref,
-		get,
-		set,
 		onValue
 	} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-database.js";
+	import {
+		getAuth,
+		signInAnonymously
+	} from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
 
 	const firebaseConfig = {
 		apiKey: "AIzaSyDUYeaxBkAqqzuLaiOGT0QdcF242nc1Ka0",
@@ -21,13 +23,19 @@
 
 	const app = initializeApp(firebaseConfig);
 	const db = getDatabase(app);
+	const auth = getAuth(app);
 
-	// Leer el estado del espacio 1
-	onValue(ref(db, "espacio1"), (snapshot) => {
-		console.log("Datos del espacio 1:", snapshot.val());
-	}, (error) => {
-		console.error("Error leyendo Firebase:", error.message);
-	});
+	signInAnonymously(auth)
+		.then(() => {
+			console.log("BiciPark conectado y autenticado");
 
-	console.log("BiciPark conectado a Firebase");
+			onValue(ref(db, "espacio1/estado"), (snapshot) => {
+				console.log("Estado del espacio 1:", snapshot.val());
+			}, (error) => {
+				console.error("Error leyendo estado:", error.message);
+			});
+		})
+		.catch((error) => {
+			console.error("Error de autenticación:", error.code, error.message);
+		});
 </script>
